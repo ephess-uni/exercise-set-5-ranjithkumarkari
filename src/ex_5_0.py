@@ -1,12 +1,18 @@
 """ex_5_0.py"""
 
-
 def line_count(infile):
-    pass
-
+    try:
+        # Open the file in read mode
+        with open(infile, 'r') as file:
+            # Read all lines into a list and count the number of lines
+            lines = file.readlines()
+            num_lines = len(lines)
+            print(f"Number of lines in {infile}: {num_lines}")
+    except FileNotFoundError:
+        print(f"Error: File '{infile}' not found.")
 
 if __name__ == "__main__":
-    # get the utility function for path discovery
+    # Get the utility function for path discovery
     try:
         from src.util import get_repository_root
     except ImportError:

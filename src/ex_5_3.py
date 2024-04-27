@@ -1,19 +1,31 @@
-""" ex_5_3.py
-This module contains an entry point that:
-
-- creates a CLi that accepts an input file of data to be processed
-- shifts and scales the data to a mean of 0 and a standard deviation 1
-- writes the file to the output file argument
-"""
+import argparse
 import numpy as np
-from argparse import ArgumentParser
+from pathlib import Path
+
+try:
+    from src.util import get_repository_root
+except ImportError:
+    from util import get_repository_root
+
+def process_data(infile, outfile):
+    # Load data from infile into a numpy array
+    data = np.loadtxt(infile, delimiter=',')
+
+    # Shift and scale the data to have mean 0 and standard deviation 1
+    processed = (data - np.mean(data, axis=0)) / np.std(data, axis=0)
+
+    # Save the processed data to outfile
+    np.savetxt(outfile, processed, delimiter=',')
 
 if __name__ == "__main__":
-    # Create your argument parser object here.
-    # Collect the filename arguments from the command line
-    # Rewrite your 5_3 logic here so that it utilizes the arguments passed from the command line.
+    parser = argparse.ArgumentParser(description="This program applies a standard scale transform to the data in infile and writes it to outfile.")
+    parser.add_argument('infile', nargs='?', default='ex_5_2-data.csv', help='Input file name')
+    parser.add_argument('outfile', nargs='?', default='ex_5_2-processed.csv', help='Output file name')
+    args = parser.parse_args()
 
-    # Tests will run your command using a system call.
-    # To test your program with arguments, run it from the command line
-    # (see README.md for more details)
-    pass
+    # Use these predefined input / output files
+    root_dir = get_repository_root()
+    infile = Path(root_dir, "data", args.infile)
+    outfile = Path(root_dir, "outputs", args.outfile)
+
+    process_data(infile, outfile)

@@ -1,4 +1,3 @@
-"""ex_5_4.py"""
 import numpy as np
 from pathlib import Path
 
@@ -7,15 +6,19 @@ try:
 except ImportError:
     from util import get_repository_root
 
-# Use these predefined paths.  Note: automated tests expect these paths
-# Changing these paths will cause tests to fail.
+if __name__ == "__main__":
+    # Use these predefined paths
+    root_dir = get_repository_root()
+    data_dir = root_dir / "data"
+    output_dir = root_dir / "outputs"
+    input_file = data_dir / "ex_5_4-data.csv"
+    output_file = output_dir / "ex_5_4-processed.csv"
 
-root_dir = get_repository_root()
-data_dir = root_dir / "data"
-output_dir = root_dir / "outputs"
-input_file = data_dir / "ex_5_4-data.csv"
-output_file = output_dir / "ex_5_4-processed.csv"
+    # Load the data from input_file
+    data = np.loadtxt(input_file, delimiter=',')
 
-# Process the input data using numpy
+    # Set any negative elements to 0
+    processed_data = np.maximum(data, 0)
 
-# Save the result to output_file
+    # Save the processed data to output_file
+    np.savetxt(output_file, processed_data, delimiter=',')
